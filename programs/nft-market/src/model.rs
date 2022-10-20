@@ -18,6 +18,6 @@ pub struct ATokenAccount<'info> {
     pub token_account: Account<'info, AssociateTokenAccount>,
 
     pub token_program : Program<'info , Token>,
-    pub associate_token_program : Program<'info , AssociatedToken>,
+    pub associated_token : Program<'info , AssociatedToken>,
     pub system_program : Program<'info , System>
 }
