@@ -4,7 +4,7 @@ pub mod state;
 
 use crate::{model::*, state::*};
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("BvDgBZ3PS8g4rz3s9hmfXNYBYM5XDqyzLqeK7cYVgoPs");
 
 #[program]
 pub mod nft_market {
