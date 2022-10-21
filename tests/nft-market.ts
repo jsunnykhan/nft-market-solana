@@ -2,6 +2,7 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { NftMarket } from "../target/types/nft_market";
+import { PublicKey } from "@solana/web3.js";
 
 describe("nft-market", () => {
   // Configure the client to use the local cluster.
@@ -18,6 +19,9 @@ describe("nft-market", () => {
   const SystemProgram = new anchor.web3.PublicKey(
     "11111111111111111111111111111111"
   );
+  const programId = new anchor.web3.PublicKey(
+    "BvDgBZ3PS8g4rz3s9hmfXNYBYM5XDqyzLqeK7cYVgoPs"
+  );
 
   it("Is initialized!", async () => {
     // Add your test here.
@@ -31,14 +35,16 @@ describe("nft-market", () => {
     console.log({ owner: owner.publicKey });
     //create a pda
 
-    const [pda, _] = findProgramAddressSync(
-      [
-        owner.publicKey.toBuffer(),
-        Token_Program.toBuffer(),
-        mint.publicKey.toBuffer(),
-      ],
-      program.programId
-    );
+    const pda = (
+      await PublicKey.findProgramAddress(
+        [
+          owner.publicKey.toBuffer(),
+          Token_Program.toBuffer(),
+          mint.publicKey.toBuffer(),
+        ],
+        Associate_Token_Program
+      )
+    )[0];
     console.log({ program_id: program.programId });
     console.log({ pda });
     const tx = await program.methods
@@ -47,10 +53,11 @@ describe("nft-market", () => {
         mint: mint.publicKey,
         owner: owner.publicKey,
         tokenAccount: pda,
-        // tokenProgram: Token_Program,
-        // associatedToken: Associate_Token_Program,
-        // systemProgram: SystemProgram,
+        tokenProgram: Token_Program,
+        associatedTokenProgram: Associate_Token_Program,
+        systemProgram: SystemProgram,
       })
+      .signers([mint, owner])
       .rpc();
     console.log("Your transaction signature", tx);
   });

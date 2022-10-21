@@ -1,10 +1,9 @@
 use anchor_lang::prelude::*;
 pub mod model;
 pub mod state;
-
 use crate::{model::*, state::*};
 
-declare_id!("BvDgBZ3PS8g4rz3s9hmfXNYBYM5XDqyzLqeK7cYVgoPs");
+declare_id!("CZN8YRNd6ki7WWKomYKFxuH6TZtiMPuQjauxsgHYSwjj");
 
 #[program]
 pub mod nft_market {
@@ -14,6 +13,9 @@ pub mod nft_market {
         let token_account = &mut ctx.accounts.token_account;
         let mint = &mut ctx.accounts.mint;
         let owner = &mut ctx.accounts.owner;
+
+        msg!("Enter the s");
+
         token_account.mint = mint.key();
         token_account.owner = owner.key();
         token_account.amount = 1;

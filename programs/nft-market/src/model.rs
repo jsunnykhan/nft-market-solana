@@ -1,15 +1,13 @@
-use anchor_lang::prelude::*;
-use anchor_spl::{token::Token, associated_token::AssociatedToken};
 use crate::state::AssociateTokenAccount;
+use anchor_lang::prelude::*;
+use anchor_spl::{associated_token::AssociatedToken, token::Token};
 
 #[derive(Accounts)]
 pub struct ATokenAccount<'info> {
-    /// CHECK: This is not dangerous we don't read or write from this account
     #[account(mut)]
-    pub mint: AccountInfo<'info>,
-    /// CHECK: This is not dangerous we don't read or write from this account
+    pub mint: Signer<'info>,
     #[account(mut)]
-    pub owner: AccountInfo<'info>,
+    pub owner: Signer<'info>,
     #[account(
         init,
         payer = owner,
@@ -17,9 +15,9 @@ pub struct ATokenAccount<'info> {
         bump,
         space= 8 + std::mem::size_of::<AssociateTokenAccount>(),
     )]
-    pub token_account: Account<'info, AssociateTokenAccount>,
+    pub token_account: Box<Account<'info, AssociateTokenAccount>>,
 
-    pub token_program : Program<'info , Token>,
-    pub associated_token_program : Program<'info , AssociatedToken>,
-    pub system_program : Program<'info , System>
+    pub token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub system_program: Program<'info, System>,
 }
